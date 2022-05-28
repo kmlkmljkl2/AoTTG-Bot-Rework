@@ -1,0 +1,91 @@
+﻿<Page
+    x:Class="AoTTG_Bot_Rework.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:AoTTG_Bot_Rework"
+    xmlns:T="using:AoTTG_Bot_Rework.Templates"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+
+        <DataTemplate x:Key="RoomTemplate" x:DataType="local:AoTTGRoomInfo">
+            <TextBlock Text="{x:Bind ToString()}" FontFamily="Consolas" FontSize="12">
+            </TextBlock>
+        </DataTemplate>
+
+        <DataTemplate x:Key="StandartTemplate" x:DataType="x:String">
+            <TextBlock Text="{x:Bind }"></TextBlock>
+        </DataTemplate>
+
+        <DataTemplate x:Key="AoTTGMessages" x:DataType="local:AoTTGMessage">
+            <TextBlock Text="{x:Bind }">
+            </TextBlock>
+        </DataTemplate>
+
+        <T:Tempselector x:Key="MainPanelTemplateSelector" RoomTemplate="{StaticResource RoomTemplate}" StandartTemplate="{StaticResource StandartTemplate}" AoTTGMessages="{StaticResource AoTTGMessages}" />
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32*" />
+            <RowDefinition Height="16*" />
+            <RowDefinition Height="17*" />
+            <RowDefinition Height="433*" />
+            <RowDefinition Height="16*" />
+            <RowDefinition Height="13*" />
+            <RowDefinition Height="13*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="63*" />
+            <ColumnDefinition Width="35*" />
+            <ColumnDefinition Width="28*" />
+            <ColumnDefinition Width="26*" />
+            <ColumnDefinition Width="46*" />
+            <ColumnDefinition Width="762*" />
+        </Grid.ColumnDefinitions>
+
+        <Button Content="Connect" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{x:Null}" Grid.ColumnSpan="2" Click="ConnectBTN_Click" SizeChanged="Button_SizeChanged" />
+        <Button Content="Disconnect" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{x:Null}" Click="DisconnectBTN_Click" SizeChanged="Button_SizeChanged" Grid.ColumnSpan="2" Grid.RowSpan="2" />
+
+        <ComboBox x:Name="RegionSelection" Grid.Column="2" VerticalAlignment="Stretch" ItemsSource="{x:Bind RegionEnums, Mode=OneWay}" HorizontalAlignment="Stretch" Grid.ColumnSpan="3" SelectedIndex="0"></ComboBox>
+
+        <ListBox x:Name="MainBox" KeyDown="MainBox_KeyDown" Grid.Column="3" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="3" ItemsSource="{x:Bind Bot.RoomList, Mode=OneWay}" Grid.ColumnSpan="3" Margin="10,0,0,0" DoubleTapped="MainBox_DoubleTapped" ItemTemplateSelector="{StaticResource MainPanelTemplateSelector}">
+            <!--<ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>-->
+        </ListBox>
+        <ListBox x:Name="PlayerList" Grid.Row="3" Grid.ColumnSpan="3" DoubleTapped="PlayerList_DoubleTapped" KeyDown="PlayerList_KeyDown">
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="local:AoTTGPlayer">
+                    <TextBlock Text="{x:Bind ToString()}" FontFamily="Consolas"></TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Viewbox Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="1">
+            <CheckBox x:Name="TcpButton" Checked="TcpButton_Checked" Unchecked="TcpButton_Checked" Content="Use TCP" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        </Viewbox>
+        <Viewbox Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="2"  Grid.RowSpan="1">
+            <CheckBox  x:Name="LoggerButton" Checked="LoggerButton_Checked" Unchecked="LoggerButton_Checked" Content="Logger"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        </Viewbox>
+
+        <Viewbox Grid.Row="6" Grid.RowSpan="1" Grid.ColumnSpan="1">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Ping:"></TextBlock>
+                <TextBlock x:Name="Pinglabel" Text="139"></TextBlock>
+            </StackPanel>
+        </Viewbox>
+        <TextBox Grid.Column="3" Grid.ColumnSpan="3" SizeChanged="TextBox_SizeChanged" Grid.Row="4" TextWrapping="NoWrap" Text="" Margin="10,0,0,0" KeyDown="TextBox_KeyDown" />
+        <Viewbox Margin="20,20,20,3" Grid.Column="5" Grid.RowSpan="2">
+            <TextBlock Text="{x:Bind InfoLabel.Data, Mode=OneWay}" />
+        </Viewbox>
+        <Viewbox Grid.Row="5">
+            <TextBlock x:Name="StatusLabel" />
+        </Viewbox>
+        <Button Content="Config" Grid.Row="4" VerticalAlignment="Stretch" Click="ConfigBTN_Click" HorizontalAlignment="Stretch" SizeChanged="SmallButtons_SizeChanged" />
+        <Button Grid.Column="1" Content="Logger" Grid.Row="4" IsEnabled="False" x:Name="LoggerBTN" VerticalAlignment="Stretch" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" SizeChanged="SmallButtons_SizeChanged" Click="LoggerBTN_Click" />
+    </Grid>
+</Page>
