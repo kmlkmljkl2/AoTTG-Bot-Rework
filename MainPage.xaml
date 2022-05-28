@@ -11,17 +11,16 @@
     <Page.Resources>
 
         <DataTemplate x:Key="RoomTemplate" x:DataType="local:AoTTGRoomInfo">
-            <TextBlock Text="{x:Bind ToString()}" FontFamily="Consolas" FontSize="12">
+            <TextBlock Text="{x:Bind ToString()}" FontFamily="Consolas" FontSize="12" TextWrapping="Wrap" HorizontalAlignment="Stretch">
             </TextBlock>
         </DataTemplate>
 
         <DataTemplate x:Key="StandartTemplate" x:DataType="x:String">
-            <TextBlock Text="{x:Bind }"></TextBlock>
+            <TextBlock Text="{x:Bind }" TextWrapping="Wrap" HorizontalAlignment="Stretch"/>
         </DataTemplate>
 
         <DataTemplate x:Key="AoTTGMessages" x:DataType="local:AoTTGMessage">
-            <TextBlock Text="{x:Bind }">
-            </TextBlock>
+            <TextBlock Text="{x:Bind }" TextWrapping="Wrap" HorizontalAlignment="Stretch"/>
         </DataTemplate>
 
         <T:Tempselector x:Key="MainPanelTemplateSelector" RoomTemplate="{StaticResource RoomTemplate}" StandartTemplate="{StaticResource StandartTemplate}" AoTTGMessages="{StaticResource AoTTGMessages}" />
