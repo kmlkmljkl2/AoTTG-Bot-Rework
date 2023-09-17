@@ -202,10 +202,20 @@ namespace AoTTG_Bot_Rework
             }
         }
 
-        public override void OnOperationResponse(OperationResponse operationResponse)
+        public override async void OnOperationResponse(OperationResponse operationResponse)
         {
             if (operationResponse.ReturnCode != 0)
             {
+                AoTTGMessage messageInfo = new AoTTGMessage()
+                {
+                    ID = 0,
+                    Message = operationResponse.ToStringFull()
+                };
+
+                await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    Messages.Add(messageInfo);
+                });
             }
 
             //Log.LogInfo(operationResponse.ToStringFull());
