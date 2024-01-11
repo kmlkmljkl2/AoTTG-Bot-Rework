@@ -67,6 +67,7 @@ namespace AoTTG_Bot_Rework
             Bot = new AoTTG_Bot(TcpButton.IsChecked == true ? ConnectionProtocol.Tcp : ConnectionProtocol.Udp)
             {
                 Region = (PhotonRegion)(RegionSelection.SelectedItem ?? RegionEnums.First())
+                
             };
             await Bot.ConnectToMasterAsync();
             MainBox.ItemsSource = Bot.RoomList;

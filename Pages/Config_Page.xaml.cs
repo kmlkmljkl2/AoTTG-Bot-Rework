@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using AoTTG_Bot_Rework.CustomClasses;
+using System;
 using Windows.Storage;
 using Windows.UI.WindowManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Hosting;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -26,7 +16,9 @@ namespace AoTTG_Bot_Rework
     public sealed partial class Config_Page : Page
     {
         private ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-
+        public static ObservableBool McToggleSetting = new ObservableBool();
+        private ObservableBool leaveWhenMCdoes => McToggleSetting;
+        public static int LoggerTime = 60;
         public Config_Page()
         {
             this.InitializeComponent();
@@ -39,6 +31,16 @@ namespace AoTTG_Bot_Rework
             {
                 NameBox.Text = localSettings.Values[Settings.PlayerName] as string;
             }
+            if (localSettings.Values.ContainsKey(Settings.McToggle))
+            {
+                leaveWhenMCdoes.Data = (bool)localSettings.Values[Settings.McToggle];
+            }
+            if (localSettings.Values.ContainsKey(Settings.LogTime))
+            {
+                LoggerTime = (int)localSettings.Values[Settings.LogTime];
+                LogTime.Text = LoggerTime.ToString();
+            }
+
         }
 
         private void TextBox_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -75,6 +77,25 @@ namespace AoTTG_Bot_Rework
             var button = sender as Button;
 
             button.FontSize = base.ActualHeight * 0.0097;
+        }
+
+        private void LogTime_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var send = (TextBox)sender;
+            if(send.Text == null) return;
+
+            if(int.TryParse(send.Text, out var time))
+            {
+                LoggerTime = time;
+                localSettings.Values[Settings.LogTime] = time;
+            }
+        }
+
+        private void McToggle_Toggled(object sender, RoutedEventArgs e)
+        {
+            var toggle = (ToggleSwitch)sender;
+            if (toggle == null) return;
+            localSettings.Values[Settings.McToggle] = toggle.IsOn;
         }
     }
 }

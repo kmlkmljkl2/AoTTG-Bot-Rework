@@ -25,7 +25,17 @@
         <Viewbox Grid.Column="1" Grid.Row="1" Margin="10,10,10,10">
             <TextBlock Text="Name:"></TextBlock>
         </Viewbox>
+        <Viewbox Grid.Column="1" Grid.Row="2" Margin="10,10,10,10">
+            <TextBlock Text="Logtime in Seconds:"></TextBlock>
+        </Viewbox>
+        <Viewbox Grid.Column="1" Grid.Row="3" Margin="10,10,10,10">
+            <TextBlock Text="Leave when MC does"></TextBlock>
+        </Viewbox>
         <TextBox x:Name="NameBox" Grid.Column="2" Grid.Row="1" TextWrapping="Wrap" FontSize="32" SizeChanged="TextBox_SizeChanged" TextChanged="TextBox_TextChanged" Text="" />
+        <TextBox x:Name="LogTime" Grid.Column="2" Grid.Row="2" TextWrapping="Wrap" FontSize="32" SizeChanged="TextBox_SizeChanged" TextChanged="LogTime_TextChanged" Text="60" />
+        <Viewbox Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left">
+            <ToggleSwitch x:Name="McToggle" x:DefaultBindMode="TwoWay" IsOn="{x:Bind leaveWhenMCdoes.Data}" Toggled="McToggle_Toggled"></ToggleSwitch>
+        </Viewbox>
         <Button Click="BTNNew_Instance" Grid.Column="1" Content="New Instance" Grid.Row="5" Margin="0,0,0,10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" SizeChanged="Button_SizeChanged" />
     </Grid>
 </Page>

@@ -33,6 +33,8 @@ namespace AoTTG_Bot_Rework.Pages
 
         private void _logs_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+            if (e.NewItems == null) return;
+
             if (!Ids.Contains(((LoggerInfo)e.NewItems[0]).Player.ID))
             {
                 Ids.Add(((LoggerInfo)e.NewItems[0]).Player.ID);
@@ -82,6 +84,8 @@ namespace AoTTG_Bot_Rework.Pages
 
         private void RefreshList()
         {
+            LoggerGrid.ItemsSource = null;
+
             LoggerGrid.ItemsSource = _logs.ToList();
             ApplyIdFilter();
         }

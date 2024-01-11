@@ -8,7 +8,7 @@
 
   <Identity
     Name="6c3d7cfa-b030-417c-890c-abc5abe2a62e"
-    Publisher="CN=kevin"
+    Publisher="CN=Nudelfee"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="6c3d7cfa-b030-417c-890c-abc5abe2a62e" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>

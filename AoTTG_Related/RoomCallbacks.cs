@@ -36,6 +36,10 @@ namespace AoTTG_Bot_Rework
             await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 PlayerList.Remove(PlayerList.FirstOrDefault(x => x.Player == otherPlayer));
+                if(otherPlayer.ActorNumber == 1 && MainPage.Instance.Bot.LeaveWhenMcDoes)
+                {
+                    MainPage.Instance.Bot.Disconnect();
+                }
             });
         }
 

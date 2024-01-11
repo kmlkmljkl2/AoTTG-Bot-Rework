@@ -2,10 +2,12 @@
 using AoTTG_Bot_Rework.Games;
 using AoTTG_Bot_Rework.Handlers;
 using ExitGames.Client.Photon;
+using ExitGames.Client.Photon.StructWrapping;
 using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -16,6 +18,7 @@ namespace AoTTG_Bot_Rework
     public class AoTTG_Bot : LoadBalancingClient, IDisposable
     {
         private ClientState BState = ClientState.Authenticated;
+        private System.Timers.Timer _Timer = new System.Timers.Timer();
 
         public AoTTG_Bot(ConnectionProtocol protocolType) : base(protocolType)
         {
@@ -60,6 +63,34 @@ namespace AoTTG_Bot_Rework
                 });
             });
             Logger.Add(new LoggerInfo() { Player = new AoTTGPlayer() });
+            _Timer.AutoReset = true;
+            _Timer.Interval = 5000;
+            _Timer.Elapsed += CollectTrash;
+            _Timer.Start();
+
+        }
+
+        private async void CollectTrash(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (LogTime == 0) return;
+            if (State != ClientState.Joined) return;
+
+            var LowestAllowed = DateTime.Now.AddSeconds(-LogTime);
+
+
+            await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                lock(Logger)
+                {
+                    foreach(var i in Logger.ToList())
+                    {
+                        if (i.Player.ID == 0) continue;
+                        TimeSpan time = i.Time - LowestAllowed;
+                        if (Math.Abs(time.TotalSeconds) > LogTime) continue;
+                        Logger.Remove(i);
+                    }
+                }
+            });
         }
 
         public enum PhotonTargets
@@ -67,6 +98,11 @@ namespace AoTTG_Bot_Rework
             All,
             Others
         }
+        /// <summary>
+        /// Time the Logger keeps the Data in Seconds
+        /// </summary>
+        public int LogTime => Config_Page.LoggerTime;
+        public bool LeaveWhenMcDoes => Config_Page.McToggleSetting.Data;
 
         public IBaseGame Game { get; set; } = new AoTTG();
         public RPCHandler Handler { get; private set; }
